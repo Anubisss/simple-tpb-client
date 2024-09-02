@@ -1,200 +1,102 @@
 'use client';
 
-import React, { useState, FC } from 'react';
-import Link from 'next/link';
+import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
-const categoryMapping = {
-  '200': 'Video',
-  '208': 'HD - TV shows',
-};
-
-const getCategoryName = (categoryId: string): string => {
-  const id = categoryId as keyof typeof categoryMapping;
-  if (categoryMapping[id]) {
-    const mainCategoryId: keyof typeof categoryMapping = (id[0] +
-      '00') as keyof typeof categoryMapping;
-    return `${categoryMapping[mainCategoryId]} > ${categoryMapping[id]}`;
-  }
-  return `Unknown (#${categoryId})`;
-};
-
-const convertTimestampToDate = (timestamp: number): string => {
-  const date = new Date(timestamp * 1000);
-
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-
-  return `${year}-${month}-${day}`;
-};
-
-const bytesToSize = (bytes: number): string => {
-  const KB = 1024;
-  const MB = KB * KB;
-  const GB = MB * KB;
-
-  if (bytes >= GB) {
-    return (bytes / GB).toFixed(1) + ' GB';
-  } else if (bytes >= MB) {
-    return (bytes / MB).toFixed(1) + ' MB';
-  } else {
-    return (bytes / KB).toFixed(1) + ' KB';
-  }
-};
-
-interface TorrentType {
-  id: string;
-  category: string;
-  name: string;
-  added: string;
-  size: string;
-  seeders: string;
-  leechers: string;
-  imdb?: string;
-  status: string;
-}
-
-interface TorrentProps {
-  torrent: TorrentType;
-}
-
-const Torrent: FC<TorrentProps> = ({ torrent }) => {
-  return (
-    <tr className="bg-white border-b hover:bg-gray-50">
-      <td className="px-6 py-4">
-        <span className="text-blue-600 hover:underline">
-          <Link href={`/torrent-details/${torrent.id}`}>{torrent.name}</Link>
-        </span>
-      </td>
-      <td className="px-6 py-4">{getCategoryName(torrent.category)}</td>
-      <td className="px-6 py-4">{convertTimestampToDate(+torrent.added)}</td>
-      <td className="px-6 py-4">{bytesToSize(+torrent.size)}</td>
-      <td className="px-6 py-4">{torrent.seeders}</td>
-      <td className="px-6 py-4">{torrent.leechers}</td>
-      <td className="px-6 py-4">
-        {torrent.imdb && (
-          <a
-            href={`https://www.imdb.com/title/${torrent.imdb}/`}
-            target="_blank"
-            rel="noreferrer"
-            className="text-blue-600 hover:underline"
-          >
-            IMDB
-          </a>
-        )}
-      </td>
-      <td className="px-6 py-4">{torrent.status}</td>
-    </tr>
-  );
-};
-
-interface TorrentListProps {
-  torrents: TorrentType[];
-}
-
-const TorrentList: FC<TorrentListProps> = ({ torrents }) => {
-  if (!torrents.length) {
-    return <div className="text-center text-gray-500">No torrents found.</div>;
-  }
-
-  return (
-    <div className="overflow-x-auto">
-      <table className="min-w-full divide-y divide-gray-200">
-        <thead className="bg-gray-50">
-          <tr>
-            <th
-              scope="col"
-              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-            >
-              Name
-            </th>
-            <th
-              scope="col"
-              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-            >
-              Category
-            </th>
-            <th
-              scope="col"
-              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-            >
-              Uploaded
-            </th>
-            <th
-              scope="col"
-              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-            >
-              Size
-            </th>
-            <th
-              scope="col"
-              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-            >
-              SE
-            </th>
-            <th
-              scope="col"
-              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-            >
-              LE
-            </th>
-            <th
-              scope="col"
-              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-            >
-              IMDb
-            </th>
-            <th
-              scope="col"
-              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-            >
-              Status
-            </th>
-          </tr>
-        </thead>
-        <tbody className="bg-white divide-y divide-gray-200">
-          {torrents.map((torrent) => (
-            <Torrent key={torrent.id} torrent={torrent} />
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
-};
+import { categoryMapping } from '@/lib/category';
 
 const Home = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [torrents, setTorrents] = useState([]);
+  const [torrentName, setTorrentName] = useState('');
+  const [category, setCategory] = useState('0');
 
-  const handleSearch = async () => {
-    const response = await fetch('/api/search', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ q: searchTerm }),
-    });
-    const data = await response.json();
-    setTorrents(data);
+  const router = useRouter();
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const name = torrentName.trim();
+
+    if (!name.length) {
+      return;
+    }
+
+    router.push(`/search-result?name=${name}&category=${category}`);
   };
 
   return (
-    <div>
-      <h1>Simple TPB Client</h1>
-      <input
-        type="text"
-        placeholder="Search..."
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        className="border rounded px-4 py-2"
-      />
-      <button
-        onClick={handleSearch}
-        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors duration-200"
-      >
-        Search
-      </button>
-      <TorrentList torrents={torrents} />
+    <div className="flex flex-col items-center justify-center mt-52">
+      <h1 className="text-4xl font-bold mb-8">Simple TPB Client</h1>
+      <form onSubmit={handleSearch} className="w-full max-w-2xl text-center">
+        <div className="flex mb-4">
+          <input
+            type="text"
+            placeholder="Search..."
+            value={torrentName}
+            autoFocus
+            onChange={(e) => setTorrentName(e.target.value)}
+            className="w-8/12 p-4 border border-gray-300 rounded-l-md"
+          />
+          <select
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            className="w-4/12 pl-1 py-4 border-t border-b border-r border-gray-300 rounded-r-md text-sm"
+          >
+            {Object.entries(categoryMapping).map(([id, name]) => (
+              <option key={id} value={id}>
+                {name}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="my-4 flex gap-x-4 items-center justify-center flex-wrap">
+          <div className="basis-full mb-2">
+            <h3 className="text-xl font-semibold">Category shortcuts</h3>
+          </div>
+          <button
+            type="button"
+            className="border border-blue-300 px-4 py-2 rounded-xl hover:bg-blue-300 bg-blue-200"
+            onClick={() => setCategory('200')}
+          >
+            Video
+          </button>
+          <button
+            type="button"
+            className="border border-blue-300 px-4 py-2 rounded-xl hover:bg-blue-300 bg-blue-200"
+            onClick={() => setCategory('207')}
+          >
+            HD Movies
+          </button>
+          <button
+            type="button"
+            className="border border-blue-300 px-4 py-2 rounded-xl hover:bg-blue-300 bg-blue-200"
+            onClick={() => setCategory('208')}
+          >
+            HD TV shows
+          </button>
+          <button
+            type="button"
+            className="border border-blue-300 px-4 py-2 rounded-xl hover:bg-blue-300 bg-blue-200"
+            onClick={() => setCategory('211')}
+          >
+            4k Movies
+          </button>
+          <button
+            type="button"
+            className="border border-blue-300 px-4 py-2 rounded-xl hover:bg-blue-300 bg-blue-200"
+            onClick={() => setCategory('212')}
+          >
+            4k TV shows
+          </button>
+        </div>
+        <div className="mb-4">
+          <button
+            type="submit"
+            className="w-full bg-blue-600 text-white p-4 rounded-md hover:bg-blue-500"
+          >
+            Search
+          </button>
+        </div>
+      </form>
     </div>
   );
 };
