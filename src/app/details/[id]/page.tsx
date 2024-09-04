@@ -35,7 +35,7 @@ const getMagnetUri = (infoHash: string, torrrentName: string): string => {
   return `magnet:?xt=urn:btih:${infoHash}&dn=${torrrentName}&tr=udp://tracker.opentrackr.org:1337&tr=udp://open.stealth.si:80/announce&tr=udp://tracker.torrent.eu.org:451/announce&tr=udp://tracker.bittor.pw:1337/announce&tr=udp://public.popcorn-tracker.org:6969/announce&tr=udp://tracker.dler.org:6969/announce&tr=udp://exodus.desync.com:6969&tr=udp://open.demonii.com:1337/announce`;
 };
 
-const TorrentDetails: FC<TorrentDetailsProps> = ({ params }) => {
+const Details: FC<TorrentDetailsProps> = ({ params }) => {
   const [details, setDetails] = useState<TorrentDetailsType | null>(null);
   const [files, setFiles] = useState<TorrentFile[]>([]);
 
@@ -43,7 +43,7 @@ const TorrentDetails: FC<TorrentDetailsProps> = ({ params }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch(`/api/torrent-details/${torrentId}`);
+      const response = await fetch(`/api/details/${torrentId}`);
       const data = await response.json();
 
       setDetails(data.details);
@@ -144,4 +144,4 @@ const TorrentDetails: FC<TorrentDetailsProps> = ({ params }) => {
   );
 };
 
-export default TorrentDetails;
+export default Details;

@@ -17,7 +17,19 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        {children}
+        <footer className="mx-auto text-center mt-8 mb-5 text-sm">
+          <a
+            href="https://github.com/Anubisss/simple-tpb-client"
+            className="text-gray-500 hover:underline"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Simple TPB Client
+          </a>
+        </footer>
+      </body>
     </html>
   );
 }

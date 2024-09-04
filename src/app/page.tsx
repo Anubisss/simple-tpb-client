@@ -15,17 +15,16 @@ const Home = () => {
     e.preventDefault();
 
     const name = torrentName.trim();
-
     if (!name.length) {
       return;
     }
 
-    router.push(`/search-result?name=${name}&category=${category}`);
+    router.push(`/result?name=${name}&category=${category}`);
   };
 
   return (
     <div className="flex flex-col items-center justify-center mt-52">
-      <h1 className="text-4xl font-bold mb-8">Simple TPB Client</h1>
+      <h1 className="text-4xl font-bold mb-8 text-blue-700">Simple TPB Client</h1>
       <form onSubmit={handleSearch} className="w-full max-w-2xl text-center">
         <div className="flex mb-4">
           <input
