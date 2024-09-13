@@ -9,9 +9,14 @@ import Torrent from '@/types/torrent';
 import LoadingIndicator from '../components/loading-indicator';
 import ErrorIndicator from '../components/error-indicator';
 import Table from './table';
+import {
+  SortBy,
+  SortDirection,
+  TorrentSearchResultSortCriteria,
+} from '@/types/torrentSearchResultSortCriteria';
 
 const isEmptyResult = (torrents: Torrent[]): boolean => {
-  return torrents.length === 1 && torrents[0].id === '0';
+  return torrents.length === 0 || (torrents.length === 1 && torrents[0].id === '0');
 };
 
 const Result = () => {
@@ -23,7 +28,13 @@ const Result = () => {
 
   const [torrentName, setTorrentName] = useState(searchParams.get('name') || '');
   const [category, setCategory] = useState(searchParams.get('category') || '');
-  const [torrents, setTorrents] = useState([]);
+  const [torrents, setTorrents] = useState<Torrent[]>([]);
+  const [sortedTorrents, setSortedTorrents] = useState<Torrent[]>([]);
+
+  const [sortCriteria, setSortCriteria] = useState<TorrentSearchResultSortCriteria>({
+    by: null,
+    direction: 'asc',
+  });
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,6 +45,20 @@ const Result = () => {
     }
 
     router.push(`/result?name=${name}&category=${category}`);
+  };
+
+  const handleSortCriteriaChange = (by: SortBy, direction: SortDirection) => {
+    if (sortCriteria.by === by && sortCriteria.direction === direction) {
+      setSortCriteria({
+        by: null,
+        direction: sortCriteria.direction,
+      });
+    } else {
+      setSortCriteria({
+        by,
+        direction,
+      });
+    }
   };
 
   useEffect(() => {
@@ -66,7 +91,24 @@ const Result = () => {
     }
   }, [searchParams]);
 
-  const resultIsEmpty = isEmptyResult(torrents);
+  useEffect(() => {
+    if (!sortCriteria.by) {
+      setSortedTorrents(torrents);
+      return;
+    }
+
+    const sorted = torrents.slice().sort((a: Torrent, b: Torrent) => {
+      const sortKey = sortCriteria.by as SortBy;
+
+      const aValue = +a[sortKey];
+      const bValue = +b[sortKey];
+
+      return sortCriteria.direction === 'asc' ? aValue - bValue : bValue - aValue;
+    });
+    setSortedTorrents(sorted);
+  }, [torrents, sortCriteria]);
+
+  const resultIsEmpty = isEmptyResult(sortedTorrents);
 
   return (
     <>
@@ -118,7 +160,13 @@ const Result = () => {
           );
         }
 
-        return <Table torrents={torrents} />;
+        return (
+          <Table
+            torrents={sortedTorrents}
+            sortCriteria={sortCriteria}
+            onSortCriteriaChange={handleSortCriteriaChange}
+          />
+        );
       })()}
     </>
   );
