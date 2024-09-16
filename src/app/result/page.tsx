@@ -14,6 +14,17 @@ import {
   SortDirection,
   TorrentSearchResultSortCriteria,
 } from '@/types/torrentSearchResultSortCriteria';
+import QuickFilters from './quick-filters';
+import { TorrentSearchResultFilters } from '@/types/torrentSearchResultFilters';
+
+const checkboxFilterKeys: (keyof Omit<TorrentSearchResultFilters, 'name'>)[] = [
+  '720p',
+  '1080p',
+  '2160p',
+  'HDR',
+  'DV',
+  'Atmos',
+];
 
 const isEmptyResult = (torrents: Torrent[]): boolean => {
   return torrents.length === 0 || (torrents.length === 1 && torrents[0].id === '0');
@@ -28,9 +39,19 @@ const Result = () => {
 
   const [torrentName, setTorrentName] = useState(searchParams.get('name') || '');
   const [category, setCategory] = useState(searchParams.get('category') || '');
-  const [torrents, setTorrents] = useState<Torrent[]>([]);
-  const [sortedTorrents, setSortedTorrents] = useState<Torrent[]>([]);
 
+  const [torrents, setTorrents] = useState<Torrent[]>([]);
+  const [filteredSortedTorrents, setFilteredSortedTorrents] = useState<Torrent[]>([]);
+
+  const [filters, setFilters] = useState<TorrentSearchResultFilters>({
+    name: '',
+    '720p': false,
+    '1080p': false,
+    '2160p': false,
+    HDR: false,
+    DV: false,
+    Atmos: false,
+  });
   const [sortCriteria, setSortCriteria] = useState<TorrentSearchResultSortCriteria>({
     by: null,
     direction: 'asc',
@@ -45,6 +66,21 @@ const Result = () => {
     }
 
     router.push(`/result?name=${name}&category=${category}`);
+  };
+
+  const handleFilterChange = (filterKey: keyof TorrentSearchResultFilters, value?: string) => {
+    setFilters((prev) => {
+      if (filterKey === 'name') {
+        return {
+          ...prev,
+          name: value as string,
+        };
+      }
+      return {
+        ...prev,
+        [filterKey]: !prev[filterKey],
+      };
+    });
   };
 
   const handleSortCriteriaChange = (by: SortBy, direction: SortDirection) => {
@@ -92,23 +128,38 @@ const Result = () => {
   }, [searchParams]);
 
   useEffect(() => {
-    if (!sortCriteria.by) {
-      setSortedTorrents(torrents);
-      return;
+    let filteredSorted = torrents.slice();
+
+    if (filters.name) {
+      const nameFilter = filters.name.trim().toLowerCase();
+      if (nameFilter) {
+        filteredSorted = filteredSorted.filter((t) => t.name.toLowerCase().includes(nameFilter));
+      }
     }
 
-    const sorted = torrents.slice().sort((a: Torrent, b: Torrent) => {
-      const sortKey = sortCriteria.by as SortBy;
+    for (const key of checkboxFilterKeys) {
+      if (filters[key]) {
+        filteredSorted = filteredSorted.filter((t) =>
+          t.name.toLowerCase().includes(key.toLowerCase())
+        );
+      }
+    }
 
-      const aValue = +a[sortKey];
-      const bValue = +b[sortKey];
+    if (sortCriteria.by) {
+      filteredSorted = filteredSorted.sort((a: Torrent, b: Torrent) => {
+        const sortKey = sortCriteria.by as SortBy;
 
-      return sortCriteria.direction === 'asc' ? aValue - bValue : bValue - aValue;
-    });
-    setSortedTorrents(sorted);
-  }, [torrents, sortCriteria]);
+        const aValue = +a[sortKey];
+        const bValue = +b[sortKey];
 
-  const resultIsEmpty = isEmptyResult(sortedTorrents);
+        return sortCriteria.direction === 'asc' ? aValue - bValue : bValue - aValue;
+      });
+    }
+
+    setFilteredSortedTorrents(filteredSorted);
+  }, [torrents, filters, sortCriteria]);
+
+  const resultIsEmpty = isEmptyResult(torrents);
 
   return (
     <>
@@ -161,11 +212,14 @@ const Result = () => {
         }
 
         return (
-          <Table
-            torrents={sortedTorrents}
-            sortCriteria={sortCriteria}
-            onSortCriteriaChange={handleSortCriteriaChange}
-          />
+          <>
+            <QuickFilters filters={filters} onFilterChange={handleFilterChange} />
+            <Table
+              torrents={filteredSortedTorrents}
+              sortCriteria={sortCriteria}
+              onSortCriteriaChange={handleSortCriteriaChange}
+            />
+          </>
         );
       })()}
     </>

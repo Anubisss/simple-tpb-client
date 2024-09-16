@@ -4,16 +4,24 @@ import React, { FC } from 'react';
 
 import Torrent from '@/types/torrent';
 import Row from './row';
-import TableHeaderSortButton from './tableHeaderSortButton';
-import { SortBy, SortDirection, TorrentSearchResultSort } from '@/types/torrentSearchResultSort';
+import TableHeaderSortButton from './table-header-sort-button';
+import {
+  SortBy,
+  SortDirection,
+  TorrentSearchResultSortCriteria,
+} from '@/types/torrentSearchResultSortCriteria';
 
 interface Props {
   torrents: Torrent[];
-  sortCriteria: TorrentSearchResultSort;
+  sortCriteria: TorrentSearchResultSortCriteria;
   onSortCriteriaChange: (by: SortBy, direction: SortDirection) => void;
 }
 
 const Table: FC<Props> = ({ torrents, sortCriteria, onSortCriteriaChange }) => {
+  if (!torrents.length) {
+    return <div className="text-center mt-8">No torrents found.</div>;
+  }
+
   return (
     <div className="overflow-x-auto">
       <table className="min-w-full divide-y divide-gray-200">
