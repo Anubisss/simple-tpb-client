@@ -23,25 +23,25 @@ const Table: FC<Props> = ({ torrents, sortCriteria, onSortCriteriaChange }) => {
   }
 
   return (
-    <div className="overflow-x-auto">
-      <table className="min-w-full divide-y divide-gray-200">
+    <div className="overflow-x-auto max-w-[1600px] mx-auto">
+      <table className="min-w-full divide-y divide-gray-200 border">
         <thead className="bg-gray-50">
           <tr>
             <th
               scope="col"
-              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              className="py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
             >
               Name
             </th>
             <th
               scope="col"
-              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              className="py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
             >
               Category
             </th>
             <th
               scope="col"
-              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              className="py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
             >
               Uploaded
               <TableHeaderSortButton
@@ -52,7 +52,7 @@ const Table: FC<Props> = ({ torrents, sortCriteria, onSortCriteriaChange }) => {
             </th>
             <th
               scope="col"
-              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              className="py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
             >
               Size
               <TableHeaderSortButton
@@ -63,7 +63,7 @@ const Table: FC<Props> = ({ torrents, sortCriteria, onSortCriteriaChange }) => {
             </th>
             <th
               scope="col"
-              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              className="py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
             >
               SE
               <TableHeaderSortButton
@@ -74,7 +74,7 @@ const Table: FC<Props> = ({ torrents, sortCriteria, onSortCriteriaChange }) => {
             </th>
             <th
               scope="col"
-              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              className="py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
             >
               LE
               <TableHeaderSortButton
@@ -85,15 +85,15 @@ const Table: FC<Props> = ({ torrents, sortCriteria, onSortCriteriaChange }) => {
             </th>
             <th
               scope="col"
-              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              className="py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
             >
-              IMDb
+              Uploader
             </th>
             <th
               scope="col"
-              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              className="py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
             >
-              Status
+              Download
             </th>
           </tr>
         </thead>
