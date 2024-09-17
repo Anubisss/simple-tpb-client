@@ -24,6 +24,7 @@ const checkboxFilterKeys: (keyof Omit<TorrentSearchResultFilters, 'name'>)[] = [
   'HDR',
   'DV',
   'Atmos',
+  'Trusted uploader',
 ];
 
 const isEmptyResult = (torrents: Torrent[]): boolean => {
@@ -51,6 +52,7 @@ const Result = () => {
     HDR: false,
     DV: false,
     Atmos: false,
+    'Trusted uploader': false,
   });
   const [sortCriteria, setSortCriteria] = useState<TorrentSearchResultSortCriteria>({
     by: null,
@@ -139,6 +141,10 @@ const Result = () => {
 
     for (const key of checkboxFilterKeys) {
       if (filters[key]) {
+        if (key === 'Trusted uploader') {
+          filteredSorted = filteredSorted.filter((t) => t.status === 'trusted');
+          continue;
+        }
         filteredSorted = filteredSorted.filter((t) =>
           t.name.toLowerCase().includes(key.toLowerCase())
         );

@@ -6,6 +6,7 @@ interface TorrentSearchResultFilters {
   HDR: boolean;
   DV: boolean;
   Atmos: boolean;
+  'Trusted uploader': boolean;
 }
 
 export type { TorrentSearchResultFilters };

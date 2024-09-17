@@ -17,7 +17,9 @@ const QuickFilters: FC<Props> = ({ filters, onFilterChange }) => {
         checked={filters[filterKey]}
         onChange={() => onFilterChange(filterKey)}
       />
-      <span className="ml-1">{filterKey}</span>
+      <span className={`ml-1 ${filterKey === 'Trusted uploader' && 'text-pink-500'}`}>
+        {filterKey}
+      </span>
     </label>
   );
 
@@ -40,6 +42,7 @@ const QuickFilters: FC<Props> = ({ filters, onFilterChange }) => {
         {renderCheckbox('HDR')}
         {renderCheckbox('DV')}
         {renderCheckbox('Atmos')}
+        {renderCheckbox('Trusted uploader')}
       </div>
     </div>
   );
