@@ -11,4 +11,5 @@ export default interface Torrent {
   imdb?: string;
   status: keyof typeof uploaderClassNames;
   info_hash: string;
+  username: string;
 }

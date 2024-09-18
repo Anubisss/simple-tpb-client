@@ -170,37 +170,35 @@ const Result = () => {
   return (
     <>
       <div className="p-4 flex justify-center bg-gray-50 border border-b-gray-200">
-        <div className="w-full max-w-5xl">
-          <form onSubmit={handleSearch} className="flex items-center gap-4">
-            <h1 className="text-3xl font-bold text-blue-700">
-              <Link href="/">Simple TPB Client</Link>
-            </h1>
-            <input
-              type="text"
-              placeholder="Search..."
-              value={torrentName}
-              onChange={(e) => setTorrentName(e.target.value)}
-              className="border rounded px-4 py-2 w-5/12"
-            />
-            <select
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              className="pl-2 py-2 border rounded-md text-sm w-2/12"
-            >
-              {Object.entries(categoryMapping).map(([id, name]) => (
-                <option key={id} value={id}>
-                  {name}
-                </option>
-              ))}
-            </select>
-            <button
-              type="submit"
-              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-500 transition-colors duration-200"
-            >
-              Search
-            </button>
-          </form>
-        </div>
+        <h1 className="text-3xl font-bold text-blue-700 absolute left-4">
+          <Link href="/">Simple TPB Client</Link>
+        </h1>
+        <form onSubmit={handleSearch} className="flex justify-center items-center gap-4">
+          <input
+            type="text"
+            placeholder="Search..."
+            value={torrentName}
+            onChange={(e) => setTorrentName(e.target.value)}
+            className="border rounded px-4 py-2 w-[420px]"
+          />
+          <select
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            className="pl-2 py-2 border rounded-md text-sm"
+          >
+            {Object.entries(categoryMapping).map(([id, name]) => (
+              <option key={id} value={id}>
+                {name}
+              </option>
+            ))}
+          </select>
+          <button
+            type="submit"
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-500 transition-colors duration-200"
+          >
+            Search
+          </button>
+        </form>
       </div>
       {(() => {
         if (loading) {
