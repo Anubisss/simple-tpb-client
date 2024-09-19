@@ -5,6 +5,14 @@ import { useRouter } from 'next/navigation';
 
 import { categoryMapping } from '@/lib/category';
 
+const categoryShortcuts = [
+  { id: '200', label: 'Video' },
+  { id: '207', label: 'HD Movies' },
+  { id: '208', label: 'HD TV shows' },
+  { id: '211', label: '4k Movies' },
+  { id: '212', label: '4k TV shows' },
+];
+
 const Home = () => {
   const [torrentName, setTorrentName] = useState('');
   const [category, setCategory] = useState('0');
@@ -51,41 +59,16 @@ const Home = () => {
           <div className="basis-full mb-2">
             <h3 className="text-xl font-semibold">Category shortcuts</h3>
           </div>
-          <button
-            type="button"
-            className="border border-blue-300 px-4 py-2 rounded-xl hover:bg-blue-300 bg-blue-200"
-            onClick={() => setCategory('200')}
-          >
-            Video
-          </button>
-          <button
-            type="button"
-            className="border border-blue-300 px-4 py-2 rounded-xl hover:bg-blue-300 bg-blue-200"
-            onClick={() => setCategory('207')}
-          >
-            HD Movies
-          </button>
-          <button
-            type="button"
-            className="border border-blue-300 px-4 py-2 rounded-xl hover:bg-blue-300 bg-blue-200"
-            onClick={() => setCategory('208')}
-          >
-            HD TV shows
-          </button>
-          <button
-            type="button"
-            className="border border-blue-300 px-4 py-2 rounded-xl hover:bg-blue-300 bg-blue-200"
-            onClick={() => setCategory('211')}
-          >
-            4k Movies
-          </button>
-          <button
-            type="button"
-            className="border border-blue-300 px-4 py-2 rounded-xl hover:bg-blue-300 bg-blue-200"
-            onClick={() => setCategory('212')}
-          >
-            4k TV shows
-          </button>
+          {categoryShortcuts.map(({ id, label }) => (
+            <button
+              key={id}
+              type="button"
+              className="border border-blue-300 px-4 py-2 rounded-xl hover:bg-blue-300 bg-blue-200"
+              onClick={() => setCategory(id)}
+            >
+              {label}
+            </button>
+          ))}
         </div>
         <div className="mb-4">
           <button
