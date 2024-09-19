@@ -1,36 +1,47 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Simple TPB Client
 
-## Getting Started
+An unofficial website for searching and downloading torrents from TPB (The Pirate Bay). This project is not publicly deployed by me, so if you’d like to use it, you’ll need to host it yourself or run it locally.
 
-First, run the development server:
+### Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Home page
+  - Search by torrent name and category (includes all categories available on TPB)
+  - Category shortcuts: quick-access buttons for frequently used categories (Video, HD Movies, HD TV Shows, 4k Movies, 4k TV Shows) to simplify the selection from the larger category dropdown
+- Search result page
+  - Results Table: displays torrent details including: torrent name, category (parent > child), upload date, size, seeders and leechers count, colored uploader status (member, vip, trusted, moderator), download link
+  - Sorting: sort results by upload date, size, seeders, or leechers.
+  - Quick Filters: instantly narrow down results without additional server requests
+    - Torrent name: free-text search within torrent names
+    - Video-specific checkboxes (search within torrent names): 720p, 1080p, 2160p, HDR, DV, Atmos
+    - Trusted uploader checkbox: shows torrents uploaded only by trusted members
+  - Torrent details navigation: click on a torrent name to navigate to its details page
+  - New search: update the torrent name and/or category at the top of the page to perform a new search
+- Details page
+  - Torrent name and download link
+  - Basic details such as category, size, seeders, leechers, upload date, uploader's username and status, IMDB link (if available), TPB link
+  - Description: torrent description, contains clickable links
+  - File list: view the list of files included in the torrent, along with their sizes
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Used technologies
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- FE: React, Nextjs, TypeScript
+- BE: Nodejs, Nextjs, TypeScript
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+### Screenshots
 
-## Learn More
+![Home page](1.png)
+![Search result](2.png)
+![Details](3.png)
 
-To learn more about Next.js, take a look at the following resources:
+### Demo video
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### How to start
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+    ```
+    npm i
+    npm run dev
+    ```
 
-## Deploy on Vercel
+### License
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+The MIT License (MIT)
