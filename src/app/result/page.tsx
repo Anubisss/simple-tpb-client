@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, FC } from 'react';
 import Link from 'next/link';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 import { categoryMapping } from '@/lib/category';
 import Torrent from '@/types/torrent';
@@ -31,15 +31,21 @@ const isEmptyResult = (torrents: Torrent[]): boolean => {
   return torrents.length === 0 || (torrents.length === 1 && torrents[0].id === '0');
 };
 
-const Result = () => {
-  const searchParams = useSearchParams();
+interface Props {
+  searchParams: {
+    name: string;
+    category: string;
+  };
+}
+
+const Result: FC<Props> = ({ searchParams }) => {
   const router = useRouter();
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
-  const [torrentName, setTorrentName] = useState(searchParams.get('name') || '');
-  const [category, setCategory] = useState(searchParams.get('category') || '');
+  const [torrentName, setTorrentName] = useState(searchParams.name || '');
+  const [category, setCategory] = useState(searchParams.category || '');
 
   const [torrents, setTorrents] = useState<Torrent[]>([]);
   const [filteredSortedTorrents, setFilteredSortedTorrents] = useState<Torrent[]>([]);
@@ -122,8 +128,8 @@ const Result = () => {
       setLoading(false);
     };
 
-    const nameSearch = searchParams.get('name') || '';
-    const categorySearch = searchParams.get('category') || '';
+    const nameSearch = searchParams.name || '';
+    const categorySearch = searchParams.category || '';
     if (nameSearch && categorySearch) {
       loadResult(nameSearch, categorySearch);
     }

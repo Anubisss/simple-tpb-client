@@ -1,7 +1,8 @@
 'use client';
 
-import { SortDirection } from '@/types/torrentSearchResultSort';
 import React, { FC } from 'react';
+
+import { SortDirection } from '@/types/torrentSearchResultSortCriteria';
 
 interface Props {
   sorted: boolean;
