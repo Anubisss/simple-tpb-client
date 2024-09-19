@@ -8,7 +8,7 @@ An unofficial website for searching and downloading torrents from TPB (The Pirat
   - Search by torrent name and category (includes all categories available on TPB)
   - Category shortcuts: quick-access buttons for frequently used categories (Video, HD Movies, HD TV Shows, 4k Movies, 4k TV Shows) to simplify the selection from the larger category dropdown
 - Search result page
-  - Results Table: displays torrent details including: torrent name, category (parent > child), upload date, size, seeders and leechers count, colored uploader status (member, vip, trusted, moderator), download link
+  - Results table: displays torrent details including: torrent name, category (parent > child), upload date, size, seeders and leechers count, colored uploader status (member, vip, trusted, moderator), download link
   - Sorting: sort results by upload date, size, seeders, or leechers.
   - Quick Filters: instantly narrow down results without additional server requests
     - Torrent name: free-text search within torrent names
@@ -34,6 +34,8 @@ An unofficial website for searching and downloading torrents from TPB (The Pirat
 ![Details](3.png)
 
 ### Demo video
+
+https://www.youtube.com/watch?v=Ee41l2mO_f8
 
 ### How to start
 
