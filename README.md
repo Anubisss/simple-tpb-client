@@ -38,17 +38,27 @@ An unofficial website for searching and downloading torrents from TPB (The Pirat
 https://www.youtube.com/watch?v=Ee41l2mO_f8
 
 ### How to start
+
 Dev mode
+
 ```
 npm i
 npm run dev
 ```
 
 Optimized production mode
+
 ```
 npm i
 npm run build
 npm start
+```
+
+### Docker
+
+```
+docker build -t simple-tpb-client .
+docker run -d --name simple-tpb-client -p 6612:3000 simple-tpb-client
 ```
 
 ### License
