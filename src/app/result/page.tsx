@@ -146,15 +146,17 @@ const Result: FC<Props> = ({ searchParams }) => {
     }
 
     for (const key of checkboxFilterKeys) {
-      if (filters[key]) {
-        if (key === 'Trusted uploader') {
-          filteredSorted = filteredSorted.filter((t) => t.status === 'trusted');
-          continue;
-        }
-        filteredSorted = filteredSorted.filter((t) =>
-          t.name.toLowerCase().includes(key.toLowerCase())
-        );
+      if (!filters[key]) {
+        continue;
       }
+
+      if (key === 'Trusted uploader') {
+        filteredSorted = filteredSorted.filter((t) => t.status === 'trusted');
+        continue;
+      }
+      filteredSorted = filteredSorted.filter((t) =>
+        t.name.toLowerCase().includes(key.toLowerCase())
+      );
     }
 
     if (sortCriteria.by) {

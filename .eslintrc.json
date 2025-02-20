@@ -11,7 +11,8 @@
   "rules": {
     "no-unused-vars": "off",
     "@typescript-eslint/no-unused-vars": "error",
-    "no-console": "warn"
+    "no-console": "warn",
+    "max-depth": ["error", 2]
   },
   "settings": {
     "react": {
