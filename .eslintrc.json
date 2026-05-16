@@ -1,12 +1,6 @@
 {
-  "extends": [
-    "next/core-web-vitals",
-    "eslint:recommended",
-    "plugin:react/recommended",
-    "plugin:react-hooks/recommended",
-    "prettier"
-  ],
-  "plugins": ["react", "react-hooks", "@typescript-eslint"],
+  "extends": ["next/core-web-vitals", "eslint:recommended", "plugin:react/recommended", "prettier"],
+  "plugins": ["react", "@typescript-eslint"],
   "parser": "@typescript-eslint/parser",
   "rules": {
     "no-unused-vars": "off",

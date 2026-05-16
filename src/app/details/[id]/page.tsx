@@ -1,6 +1,6 @@
 'use client';
 
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, use, useEffect, useState } from 'react';
 import Link from 'next/link';
 
 import ErrorIndicator from '@/app/components/error-indicator';
@@ -10,19 +10,20 @@ import TorrentFile from '@/types/torrentFile';
 import Details from './details';
 
 interface Props {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 const DetailsPage: FC<Props> = ({ params }) => {
+  const { id } = use(params);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
   const [details, setDetails] = useState<TorrentDetails | null>(null);
   const [files, setFiles] = useState<TorrentFile[]>([]);
 
-  const torrentId = params.id;
+  const torrentId = id;
 
   useEffect(() => {
     const fetchData = async (id: string) => {
@@ -38,7 +39,7 @@ const DetailsPage: FC<Props> = ({ params }) => {
           data.files.map((f: { name: string[]; size: number[] }) => ({
             name: f.name[0],
             size: f.size[0],
-          }))
+          })),
         );
 
         setError(false);

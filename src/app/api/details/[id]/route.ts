@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server';
 import axios from 'axios';
 
-export const GET = async (req: Request, { params }: { params: { id: string } }) => {
-  const { id } = params;
+export const GET = async (req: Request, { params }: { params: Promise<{ id: string }> }) => {
+  const { id } = await params;
 
   // bypass TPB's cache
   const cacheTimestamp = new Date().getTime();

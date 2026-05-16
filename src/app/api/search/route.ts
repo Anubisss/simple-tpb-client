@@ -8,7 +8,7 @@ export const POST = async (req: Request) => {
   const cacheTimestamp = new Date().getTime();
 
   const res = await axios.get(
-    `https://apibay.org/q.php?q=${q}&cat=${cat}&timestamp=${cacheTimestamp}`
+    `https://apibay.org/q.php?q=${q}&cat=${cat}&timestamp=${cacheTimestamp}`,
   );
   return NextResponse.json(res.data);
 };

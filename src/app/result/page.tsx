@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, FC } from 'react';
+import React, { useState, useEffect, use, FC } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
@@ -32,13 +32,14 @@ const isEmptyResult = (torrents: Torrent[]): boolean => {
 };
 
 interface Props {
-  searchParams: {
+  searchParams: Promise<{
     name: string;
     category: string;
-  };
+  }>;
 }
 
-const Result: FC<Props> = ({ searchParams }) => {
+const Result: FC<Props> = ({ searchParams: searchParamsPromise }) => {
+  const searchParams = use(searchParamsPromise);
   const router = useRouter();
 
   const [loading, setLoading] = useState(false);
@@ -155,7 +156,7 @@ const Result: FC<Props> = ({ searchParams }) => {
         continue;
       }
       filteredSorted = filteredSorted.filter((t) =>
-        t.name.toLowerCase().includes(key.toLowerCase())
+        t.name.toLowerCase().includes(key.toLowerCase()),
       );
     }
 
